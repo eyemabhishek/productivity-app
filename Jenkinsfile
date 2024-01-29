@@ -17,10 +17,27 @@ pipeline {
       }
     }
 
-    stage('Build Client Image')
-    steps{
-        sh 'docker build -t prosoftdevops/productivity-app:client-latest client'
+    stage('Build Client Image'){
+        steps{
+            sh 'docker build -t prosoftdevops/productivity-app:client-latest client'   
+        }
+        
     }
 
+    stage('Push Image to Docker Hub'){
+        steps{
+            withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+			sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+			sh 'docker push prosoftdevops/productivity-app:client-latest'
+		}
+        }
+    }
+
+
+
+
+
+
   }
+   
 }
