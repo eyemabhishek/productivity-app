@@ -17,5 +17,10 @@ pipeline {
       }
     }
 
+    stage('Build Client Image')
+    steps{
+        sh 'docker build -t prosoftdevops/productivity-app:client-latest client'
+    }
+
   }
 }
